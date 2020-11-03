@@ -71,7 +71,7 @@ char n_to_c(int a) {
 char* my_itoa(char* buf, int a, int p, int znak) {
 
 	int i = 0;
-	printf("\n metka %d\n", a);
+	//printf("\n metka %d\n", a);
 	do {
 
 		buf[i++] = n_to_c(a % p);
@@ -115,6 +115,7 @@ int check(char* str, int p) {
 	}
 	return(1);
 }
+//непечатные символы 
 char echo(unsigned char sim) {
 	unsigned char c = '?';
 	if ((sim >= 32) && (sim != 127)&&(sim < 254)) {
@@ -131,14 +132,15 @@ int main()
 	setlocale(LC_ALL, "Rus");
 	printf("If ATOI-1, if ITOA - 2,if file - 3\n");
 	int des;
-	
-    scanf_s("%d", &des);
-	
-	printf("\n%d\n", des);
+	scanf_s("%d", &des);
 	if (des == 1) {      // если надо из строки в число 
 		printf("введиде систему счисления\n");
 		int sist;
 		scanf_s("%d", &sist);
+		if ((sist > 62) || (sist < 2)) {
+			printf("\nнекорекный ввод: система выходит за ограничения (2 <= p <= 62)");
+			exit(0);
+		}
 		printf("введите строку\n");
 		char StrSim[SIZE];
 		int i = 0;
@@ -173,10 +175,6 @@ int main()
 			sist = max_sist(StrSim, i) + 1;// система на 1 больше максимального числа в строке
 			printf("\nсистема\n%d\n", sist);
 		}
-		if ((sist > 62) || (sist < 2)) {
-			printf("\nнекорекный ввод: система выходит за ограничения (2 <= p <= 62)");
-			exit(0);
-		}
 		int ch = 1;
 		ch = check(StrSim, sist);// на случай если числа в системе ее превышают 
 		if (ch == 0) {
@@ -190,15 +188,14 @@ int main()
 		printf("получилось число  \n%d", chislo * znak);
 	}
 	else if (des == 2) { // если из числа в строку 
-		printf("второе  \n");
 		printf("введиде систему счисления\n");
 		int sist;
 		scanf_s("%d", &sist);
 		printf("введите число \n");
-		int i = 0;// чтобы не было лишних + и -
+		int i = 0;
 		int znak = 1; 
 		int chislo = 0;
-		int c;// или надо char ?
+		int c;
 		long long n = 0;// заведомо больше инта 
 		while ((c = getche()) != '\r') {
 			if ((c == '+') && (i == 0)) {
@@ -231,14 +228,14 @@ int main()
 		int rasm=0;// для определения количества ячеек 
 		do {
 			rasm ++;
-			printf("\nppp\n%d\t %d\n", prov, rasm  );
+			//printf("\nppp\n%d\t %d\n", prov, rasm  );
 		} while (( prov  /= sist ) > 0);
 		char* NewStr;
 		rasm++; // для '0'
 	    if (znak == -1) {
 		    rasm++; // для '-'
 	    }
-		printf("\nproverka %d\n",  rasm);
+		//printf("\nproverka %d\n",  rasm);
 	    NewStr = (char*)malloc(rasm * sizeof(char));
 	    my_itoa(NewStr, chislo, sist, znak);
 	    free(NewStr);
@@ -248,9 +245,7 @@ int main()
 	    char name[NAME];
         printf("Ведите имя файла: ");
 		fseek(stdin, 0,SEEK_SET);
-	   // gets_s(name, 25);
 		gets_s(name, 255);
-		//scanf_s("%s", name);
 	    FILE* f;
 	    fopen_s(&f, name, "rb");
 	    /* if (!f)
@@ -266,22 +261,8 @@ int main()
 	    fread(str, 1, nLen, f);
 	    str[nLen] = '\0';//массив 
 	    fclose(f);
-	    //printf("полученая строка\n");
-		/*for (int i = 0; i < nLen; i++) {
-
-			printf("%c", echo(str[i]));
-
-
-		}*/
-	    //printf("\nстрока интов \n");
-	    //int* new_str;
-	    //new_str = (int*)malloc(nLen * sizeof(int));
-	    //for (int i = 0; i < nLen; i++) {
-		   //new_str[i] = str[i];
-		   ////printf("%d\t", new_str[i]);
-	    //}
-		int out = 0;
-	     printf("\nновая но старая\n");
+	    int out = 0;
+	     printf("\nрезультат\n");
 	    for (int i = 0; i < nLen; i++) {
 			if (out == 16) {
 				printf("|| ");
@@ -306,12 +287,4 @@ int main()
 	    printf("\n");
 	    	
     }
-   
-
-
-	
-
-
-
-
 }
